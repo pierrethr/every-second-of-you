@@ -21,7 +21,7 @@ var updateCall  = setInterval(update, 1000);
 var drawCall    = setInterval(draw, 100);
 var cnt = 1;
 
-var captureRate = 15;
+var captureRate = 5;
 var imgs = [];
 var imgsTimes = [];
 
@@ -45,26 +45,26 @@ function draw() {
   cvs.width = w;
   cvs.height = h;
 
-  var index = 0;
-  for (var i=0; i <rows; i++) {
-    for (var j=0; j<cols; j++) {  
-      var x = vW*j;    
-      var y = vH*i;
+  
 
-      // ctx.beginPath();
-      // ctx.lineWidth = "1";
-      // ctx.strokeStyle = "red";
-      // ctx.fillStyle = "#FF0000";
-      // ctx.rect(x, y, vW, vH);
-      
-      // ctx.stroke();
-      // if (index >= cnt) ctx.fill();
-      // else              ctx.stroke();
+  var index = 0;
+  var xtrans;
+  var ytrans;
+
+  for (var i=0; i <rows; i++) {
+
+    for (var j=0; j<cols; j++) {  
+      xtrans = (j == 0 && i > 0) ?  ((cols-1)*vW)*-1 : vW;
+      ytrans = (j == 0 && i > 0) ?  vH : 0;
 
       var img = getDelayedFrame(index);
-      console.log(img);
 
-      if(img != undefined) ctx.drawImage(getDelayedFrame(index), x, y, vW, vH);
+      if(img != undefined) {
+        ctx.translate(xtrans, ytrans);
+        ctx.scale(-1, 1);
+        ctx.drawImage(getDelayedFrame(index), 0, 0, vW, vH);
+        ctx.scale(-1, 1);
+      }
       
       index++;
     }
